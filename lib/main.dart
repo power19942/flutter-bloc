@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import './my_bloc.dart';
+import 'counter_bloc.dart';
+import 'counter_event.dart';
 
 void main() => runApp(MyApp());
 
@@ -32,41 +33,53 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-  var _bloc = CounterBLoC();
+  var _bloc = CounterBloc();
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _bloc.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: StreamBuilder(
-        stream: _bloc.stream_counter,
-        initialData: 0,
-        builder: (_, snapshot) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  '${snapshot.data}' ?? "no data",
-                ),
-              ],
+        appBar: AppBar(),
+        body: StreamBuilder(
+          stream: _bloc.counter,
+          initialData: 0,
+          builder: (_, AsyncSnapshot<int> snapshot) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    '${snapshot.data}' ?? "no data",
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            FloatingActionButton(
+              onPressed: () {
+                _bloc.counterEventSink.add(IncrementEvent());
+              },
+              child: Icon(Icons.add),
             ),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _bloc.counter_event_sink.add(IncrementEvent());
-        },
-        child: Icon(Icons.add),
-      ),
-    );
+            SizedBox(
+              width: 10,
+            ),
+            FloatingActionButton(
+              onPressed: () {
+                _bloc.counterEventSink.add(DecrementEvent());
+              },
+              child: Icon(Icons.remove),
+            ),
+          ],
+        ));
   }
 }
