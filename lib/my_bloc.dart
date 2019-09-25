@@ -1,24 +1,31 @@
 import 'dart:async';
 
-/*class MyBloc{
+class MyCounterBloc{
   int counter = 0;
   final controller = StreamController<int>();
-  Sink<int> get add => controller.sink;
+  StreamSink<int> get controller_sink => controller.sink;
   Stream<int> get data => controller.stream;
+  final counterEventController = StreamController<int>();
+  Sink<int> get counter_event_sink => counterEventController.sink;
 
-  MyBloc(){
-    //controller.stream.listen(onAdd);
+
+  MyCounterBloc(){
+    counterEventController.stream.listen(onAdd);
   }
 
   onAdd(int number){
-    controller.add(++counter);
+    controller_sink.add(++counter);
   }
 
   dispose(){
     controller.close();
+    counterEventController.close();
   }
-}*/
+}
 
+/////////////////////////////////////
+/////////////////////////////////////
+/////////////////////////////////////
 abstract class CounterEvent{}
 
 class IncrementEvent extends CounterEvent{}

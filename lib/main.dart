@@ -33,7 +33,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  var _bloc = CounterBLoC();
+  var _bloc = MyCounterBloc();
 
   @override
   void dispose() {
@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(),
       body: StreamBuilder(
-        stream: _bloc.stream_counter,
+        stream: _bloc.data,
         initialData: 0,
         builder: (_, snapshot) {
           return Center(
@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _bloc.counter_event_sink.add(IncrementEvent());
+          _bloc.counter_event_sink.add(1);
         },
         child: Icon(Icons.add),
       ),
